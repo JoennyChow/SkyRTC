@@ -13,6 +13,8 @@ var errorCb = function(rtc) {
 function SkyRTC() {
 	this.sockets = [];
 	this.rooms = {};
+	this.userList = {};
+
 	this.on('__join', function(data, socket) {
 		console.log(this.sockets.length);
 		var ids = [],
@@ -22,13 +24,14 @@ function SkyRTC() {
 			curRoom;
 
 		curRoom = this.rooms[room] = this.rooms[room] || [];
-
+		this.userList[curSocket.id] = data.userId;
 		for (i = 0, m = curRoom.length; i < m; i++) {
 			curSocket = curRoom[i];
 			if (curSocket.id === socket.id) {
 				continue;
 			}
 			ids.push(curSocket.id);
+			
 			curSocket.send(JSON.stringify({
 				"eventName": "_new_peer",
 				"data": {
@@ -45,7 +48,7 @@ function SkyRTC() {
 			"data": {
 				"connections": ids,
 				"you": socket.id,
-                                "userId" : 12345
+                "userList" : this.userList;
 			}
 		}), errorCb);
 
@@ -109,6 +112,7 @@ SkyRTC.prototype.removeSocket = function(socket) {
 	var i = this.sockets.indexOf(socket),
 		room = socket.room;
 	this.sockets.splice(i, 1);
+	delete this.userList[socket.id];
 	if (room) {
 		i = this.rooms[room].indexOf(socket);
 		this.rooms[room].splice(i, 1);
