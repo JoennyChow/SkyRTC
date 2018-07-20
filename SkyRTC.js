@@ -44,7 +44,8 @@ function SkyRTC() {
 			"eventName": "_peers",
 			"data": {
 				"connections": ids,
-				"you": socket.id
+				"you": socket.id,
+                                "userId" : 12345
 			}
 		}), errorCb);
 
