@@ -35,7 +35,7 @@ function SkyRTC() {
 			curSocket.send(JSON.stringify({
 				"eventName": "_new_peer",
 				"data": {
-					"socketId": socket.id
+					"socketId": socket.id,
 					"userId" : data.userId
 				}
 			}), errorCb);
