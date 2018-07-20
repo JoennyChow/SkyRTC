@@ -36,6 +36,7 @@ function SkyRTC() {
 				"eventName": "_new_peer",
 				"data": {
 					"socketId": socket.id
+					"userId" : data.userId
 				}
 			}), errorCb);
 		}
@@ -190,7 +191,8 @@ SkyRTC.prototype.init = function(socket) {
 				curRoom[i].send(JSON.stringify({
 					"eventName": "_remove_peer",
 					"data": {
-						"socketId": socket.id
+						"socketId": socket.id,
+						"userId": that.userList[socket.id]
 					}
 				}), errorCb);
 			}
