@@ -48,7 +48,7 @@ function SkyRTC() {
 			"data": {
 				"connections": ids,
 				"you": socket.id,
-                "userList" : this.userList;
+                "userList" : this.userList
 			}
 		}), errorCb);
 
