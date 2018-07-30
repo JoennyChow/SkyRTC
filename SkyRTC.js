@@ -73,6 +73,18 @@ function SkyRTC() {
 		}
 	});
 
+	this.on('__invite_video_chat',function(data,socket){
+		var soc = this.getSocket(data.socketId);
+		if (soc) {
+			soc.send(JSON.stringify({
+				"eventName": "_invite_video_chat",
+				"data": {
+					"userId": this.userList[data.socketId]
+				}
+			}), errorCb);
+		}
+	});
+
 	this.on('__offer', function(data, socket) {
 		var soc = this.getSocket(data.socketId);
 
@@ -192,7 +204,7 @@ SkyRTC.prototype.init = function(socket) {
 					"eventName": "_remove_peer",
 					"data": {
 						"socketId": socket.id,
-						"userId": that.userList[socket.id]
+						"userId" : that.userList[socket.id]
 					}
 				}), errorCb);
 			}
