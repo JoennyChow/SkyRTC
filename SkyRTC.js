@@ -79,7 +79,7 @@ function SkyRTC() {
 			soc.send(JSON.stringify({
 				"eventName": "_invite_video_chat",
 				"data": {
-					"userId": this.userList[data.socketId]
+					"userId": this.userList[socket.id]
 				}
 			}), errorCb);
 		}
