@@ -85,6 +85,19 @@ function SkyRTC() {
 		}
 	});
 
+	this.on('__cancel_action',function(data,socket){
+		var soc = this.getSocket(data.socketId);
+		if (soc) {
+			soc.send(JSON.stringify({
+				"eventName": "_cancel_action",
+				"data": {
+					"type":data.type,
+					"userId": this.userList[socket.id]
+				}
+			}), errorCb);
+		}
+	});
+
 	this.on('__offer', function(data, socket) {
 		var soc = this.getSocket(data.socketId);
 
