@@ -15,8 +15,25 @@ function SkyRTC() {
 	this.rooms = {};
 	this.userList = {};
 
+	this.on('__connect',function(data,socket){
+		this.userList[socket.id] = data.userId;
+		this.rtc.broadcast(JSON.stringify({
+				"eventName": "_user_online",
+				"data": {
+					"socketId": socket.id,
+					"userId" : this.userList[socket.id]
+				}
+			}),errorCb);
+		socket.send(JSON.stringify({
+				"eventName": "_connected",
+				"data": {
+					"you": socket.id,
+	                "userList" : this.userList
+				}
+			}),errorCb);
+	});
+
 	this.on('__join', function(data, socket) {
-		console.log(this.sockets.length);
 		var ids = [],
 			i, m,
 			room = data.room || "__default",
@@ -24,7 +41,6 @@ function SkyRTC() {
 			curRoom;
 
 		curRoom = this.rooms[room] = this.rooms[room] || [];
-		this.userList[socket.id] = data.userId;
 		for (i = 0, m = curRoom.length; i < m; i++) {
 			curSocket = curRoom[i];
 			if (curSocket.id === socket.id) {
@@ -36,7 +52,7 @@ function SkyRTC() {
 				"eventName": "_new_peer",
 				"data": {
 					"socketId": socket.id,
-					"userId" : data.userId
+					"userId" : this.userList[socket.id]
 				}
 			}), errorCb);
 		}
@@ -47,9 +63,7 @@ function SkyRTC() {
 		socket.send(JSON.stringify({
 			"eventName": "_peers",
 			"data": {
-				"connections": ids,
-				"you": socket.id,
-                "userList" : this.userList
+				"connections": ids
 			}
 		}), errorCb);
 
