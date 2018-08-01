@@ -17,7 +17,7 @@ function SkyRTC() {
 
 	this.on('__connect',function(data,socket){
 		this.userList[socket.id] = data.userId;
-		this.rtc.broadcast(JSON.stringify({
+		this.broadcast(JSON.stringify({
 				"eventName": "_user_online",
 				"data": {
 					"socketId": socket.id,
