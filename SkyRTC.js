@@ -112,6 +112,18 @@ function SkyRTC() {
 		}
 	});
 
+	this.on('__create_room',function(data,socket){
+		var soc = this.getSocket(data.socketId);
+		if (soc) {
+			soc.send(JSON.stringify({
+				"eventName": "_join_room",
+				"data": {
+					"roomId":data.roomId
+				}
+			}), errorCb);
+		}
+	});
+
 	this.on('__offer', function(data, socket) {
 		var soc = this.getSocket(data.socketId);
 
