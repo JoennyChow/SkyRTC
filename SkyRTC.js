@@ -79,6 +79,7 @@ function SkyRTC() {
 				"data": {
 					"label": data.label,
 					"candidate": data.candidate,
+					"id":data.id,
 					"socketId": socket.id
 				}
 			}), errorCb);
